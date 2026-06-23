@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\n32g033_std_periph_driver\inc;.\n32g033_std_periph_driver\src;.\CMSIS\core;.\CMSIS\device\startup;.\USER\src;.\USER\inc;.\CMSIS\device;.\DVI\src;..\N32G033</IncludePath>
+              <IncludePath>.\n32g033_std_periph_driver\inc;.\n32g033_std_periph_driver\src;.\CMSIS\core;.\CMSIS\device\startup;.\USER\src;.\USER\inc;.\CMSIS\device;.\DVI\src;.\USER\src;.\USER\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -536,24 +536,24 @@
               <FilePath>.\DVI\src\dri_timer.c</FilePath>
             </File>
             <File>
+              <FileName>dri_pvd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\dri_pvd.c</FilePath>
+            </File>
+            <File>
               <FileName>dri_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\dri_uart.c</FilePath>
+              <FilePath>.\USER\src\dri_uart.c</FilePath>
             </File>
             <File>
               <FileName>dri_uart2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\dri_uart2.c</FilePath>
-            </File>
-            <File>
-              <FileName>dri_pvd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\dri_pvd.c</FilePath>
+              <FilePath>.\USER\src\dri_uart2.c</FilePath>
             </File>
             <File>
               <FileName>keelop_crc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\keelop_crc.c</FilePath>
+              <FilePath>.\USER\src\keelop_crc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -561,29 +561,29 @@
           <GroupName>INT</GroupName>
           <Files>
             <File>
-              <FileName>it_433.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\it_433.c</FilePath>
-            </File>
-            <File>
-              <FileName>it_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\it_timer.c</FilePath>
-            </File>
-            <File>
               <FileName>n32g033_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\USER\src\n32g033_it.c</FilePath>
             </File>
             <File>
-              <FileName>it_exit.c</FileName>
+              <FileName>it_433.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\it_exit.c</FilePath>
+              <FilePath>.\USER\src\it_433.c</FilePath>
             </File>
             <File>
               <FileName>it_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\it_adc.c</FilePath>
+              <FilePath>.\USER\src\it_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>it_exit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\it_exit.c</FilePath>
+            </File>
+            <File>
+              <FileName>it_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\it_timer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -591,49 +591,49 @@
           <GroupName>APP</GroupName>
           <Files>
             <File>
-              <FileName>app_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\app_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_uart2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\app_uart2.c</FilePath>
-            </File>
-            <File>
               <FileName>app_433.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\app_433.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_buzz.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\app_buzz.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\app_motor.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_limt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\app_limt.c</FilePath>
+              <FilePath>.\USER\src\app_433.c</FilePath>
             </File>
             <File>
               <FileName>app_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\app_adc.c</FilePath>
+              <FilePath>.\USER\src\app_adc.c</FilePath>
             </File>
             <File>
-              <FileName>app_led.c</FileName>
+              <FileName>app_buzz.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\app_led.c</FilePath>
+              <FilePath>.\USER\src\app_buzz.c</FilePath>
             </File>
             <File>
               <FileName>app_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\app_flash.c</FilePath>
+              <FilePath>.\USER\src\app_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\app_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_limt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\app_limt.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\app_motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\app_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_uart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\app_uart2.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -641,24 +641,29 @@
           <GroupName>Head</GroupName>
           <Files>
             <File>
-              <FileName>h_uart.h</FileName>
+              <FileName>ALL.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\h_uart.h</FilePath>
-            </File>
-            <File>
-              <FileName>h_tim.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\h_tim.h</FilePath>
+              <FilePath>.\USER\inc\ALL.h</FilePath>
             </File>
             <File>
               <FileName>h_433.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\h_433.h</FilePath>
+              <FilePath>.\USER\inc\h_433.h</FilePath>
             </File>
             <File>
-              <FileName>ALL.h</FileName>
+              <FileName>H_ALL.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\ALL.h</FilePath>
+              <FilePath>.\USER\inc\H_ALL.h</FilePath>
+            </File>
+            <File>
+              <FileName>h_tim.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\USER\inc\h_tim.h</FilePath>
+            </File>
+            <File>
+              <FileName>h_uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\USER\inc\h_uart.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -12,6 +12,10 @@ extern "C" {
 #define LOG_INFO    30
 #define LOG_DEBUG   40
 
+
+
+
+
 #ifndef LOG_LEVEL
 #define LOG_LEVEL LOG_DEBUG
 #endif
@@ -41,8 +45,7 @@ extern "C" {
 #endif
 
 void log_init(void);
-  
-
+int fputc(int ch, FILE* f);
 #ifdef __cplusplus
 }
 #endif
