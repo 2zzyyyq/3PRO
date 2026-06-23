@@ -2,7 +2,7 @@
 #include "dri_uart2.h"
 #include "app_uart2.h"
 
- //#define OTA
+ #define OTA
 /*不能优化太大*/
 /**
 *\*\name    main.
