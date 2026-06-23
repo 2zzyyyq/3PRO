@@ -1,4 +1,5 @@
  #include "ALL.h"
+ #include "app_debug.h"
  // 电机控制相关变量
   uint8_t conform_motor_obs_num, conform_motor_obs_num2;
   uint8_t A_obs_correction;
@@ -25,6 +26,7 @@ void alarm_signal_test_and_beep(void)
 						Device_State_Data.Motor_State_Byte=MOTOR_SUSPEND_STATE;
 						SetupBzhx(LONG_BEEP,Flash_Data.Beep_open);// 蜂鸣一声
 						Flag.Encounter_Obstacle_Motor_stop=1;// 遇阻停止
+						DEBUG_WARN(MOD_LIMIT, "YZ obstacle stop! motor_state=%d pos=%d", Device_State_Data.Motor_State_Byte, Ell_Data.Motor_Current_Position);
 
 						Up_State_Data.Motor_Position=0xff;
 						Flag.Run_to_set_position_flag=0;// 运行到指定位置过程标志清零
@@ -58,6 +60,7 @@ void alarm_signal_test_and_beep(void)
 						Time.beep_off_5stime=0;
 						Time.Encounter_Obstacle_beepnum=0;
 						Err.err_bit.Encounter_Obstacle=1;
+						DEBUG_WARN(MOD_LIMIT, "Encounter obstacle ERR! YZ signal timeout>3s");
 					}
 					else
 					{
@@ -122,6 +125,7 @@ void alarm_signal_test_and_beep(void)
 					Time.Up_Data_Delay_time=1000;// 延时1s上报故障
 					Err.err_bit.Motor_Err=1;
 					motor_stop();// 电机停止
+					DEBUG_ERROR(MOD_MOTOR, "Motor stall by overcurrent! AD=%d threshold=%d", Motor_Current.ADvalue, MOTOR_ERR_CURRENT_ADVALUE);
 					Device_State_Data.Motor_State_Byte=MOTOR_SUSPEND_STATE;// 停止
 					Flag.No_judge_electronic_limit=0;
 				}
@@ -171,6 +175,7 @@ void alarm_signal_test_and_beep(void)
 								Time.Motor_Err_beepnum=0;
 								Err.err_bit.Motor_Err=1;
 								Time.Up_Data_Delay_time=1000;// 延时1s上报故障，防止app在更新电机状态时收到故障信息
+					DEBUG_ERROR(MOD_MOTOR, "Motor stall! no position change, dir=%s pos=%d last=%d", (Device_State_Data.Motor_State_Byte==MOTOR_UP_STATE)?"UP":"DOWN", Motor_Current_Position_pulse, Holl_pulse_temp);
 								motor_stop();// 电机停止
 								Flag.No_judge_electronic_limit=0;
 								Device_State_Data.Motor_State_Byte=MOTOR_SUSPEND_STATE;// 暂停
@@ -195,6 +200,7 @@ void alarm_signal_test_and_beep(void)
 						if(Time.Judge_Over_Wight_time>=MOTOR_OVER_WEIGHT_TIEM)// 确认超重电流
 						{
 							Time.Judge_Over_Wight_time=0;
+					DEBUG_ERROR(MOD_MOTOR, "Overweight detected! AD=%d threshold=%d", Motor_Current.ADvalue, motor_current_to_advalue(Ell_Data.Motor_Run_Circle));
 							current_state=2;
 						}
 				        }
@@ -246,6 +252,7 @@ void alarm_signal_test_and_beep(void)
 							}
 							if(conform_motor_obs_num>=(UPTREND_NUM+Flash_Data.Uptrend_Num_Correct))// 判断为电机上行障碍
 							{
+					DEBUG_WARN(MOD_MOTOR, "Uphill obstacle! AD_max=%d uptrend_num=%d", ADC_sample_max, conform_motor_obs_num);
 								current_state=1;
 							}
 						}
@@ -388,6 +395,7 @@ void limit_protect(void)
 			if(Time.return_to_up_time>=LIMIT_SIGNAL_FITER_TIME)
 			{
 				Flag.Up_limit=1;
+					DEBUG_TRACE(MOD_LIMIT, "Up limit reached! pos=0, motor_state=%d", Device_State_Data.Motor_State_Byte);
 				Device_State_Data.Motor_Position=0;
 				Ell_Data.Motor_Current_Position=UP_POSITION_VALUE;
 				Time.return_to_up_time=0;
@@ -396,6 +404,7 @@ void limit_protect(void)
 				{
 					Device_State_Data.Motor_State_Byte=MOTOR_UP_STOP_STATE;
 					SetupBzhx(LONG_BEEP,Flash_Data.Beep_open);
+					DEBUG_TRACE(MOD_LIMIT, "Mechanical up limit stop! pos_pulse=%d", Ell_Data.Motor_Current_Position);
 					Motor_Circle_num++;
 					if(Motor_Circle_num==10)
 					{
@@ -465,6 +474,7 @@ void limit_protect(void)
 						{
 							Device_State_Data.Motor_State_Byte=MOTOR_DOWN_STOP_STATE;
 							SetupBzhx(LONG_BEEP,Flash_Data.Beep_open);
+					DEBUG_TRACE(MOD_LIMIT, "Electronic down limit reached! pos_pulse=%d", Ell_Data.Motor_Current_Position);
 						}
 					}
 				}
@@ -475,6 +485,7 @@ void limit_protect(void)
 						Flag.Overweight_current_correct_start=0;// 停止校准
 						Device_State_Data.Motor_State_Byte=MOTOR_UP_STOP_STATE;
 						SetupBzhx(LONG_BEEP,Flash_Data.Beep_open);
+					DEBUG_TRACE(MOD_LIMIT, "Electronic up limit reached! pos_pulse=%d", Ell_Data.Motor_Current_Position);
 						Motor_Circle_num++;
 						if(Motor_Circle_num==10)
 						{

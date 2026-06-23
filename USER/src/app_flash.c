@@ -146,6 +146,7 @@ void read_data(void)
 //存储块0
 void save_data(void)
 {	
+	DEBUG_INFO(MOD_FLASH, "Flash data save triggered");
 	if(FDL_Block0_Save_Times>=FDL_ONCE_MAX_WRITE_NUM-2)//fdl区存满了，最后一块区留给掉电保存
 	{
 	

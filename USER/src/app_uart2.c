@@ -10,6 +10,7 @@
 
 #include "dri_uart2.h"
 #include "app_uart2.h"
+#include "app_debug.h"
 
 /*==============================================================================
  * 帧接收缓冲区
@@ -90,7 +91,25 @@ uint8_t uart2_data_unpack(uint8_t data)
  *============================================================================*/
 void uart2_data_handle(uint8_t *frame, uint16_t len)
 {
-    /* 回显接收到的帧，方便调试验证 */
+    /* 跳过空帧 */
+    if (len == 0 || frame == NULL) return;
+
+    /* 去除尾部 \r / \n 用于命令匹配 */
+    while (len > 0 && (frame[len - 1] == '\r' || frame[len - 1] == '\n')) {
+        len--;
+    }
+
+    /* 调试命令拦截: 以 "DBG:" 开头 */
+    if (len >= 4 && frame[0] == 'D' && frame[1] == 'B' && frame[2] == 'G' && frame[3] == ':') {
+        /* 临时确保字符串以 \0 结尾 */
+        uint8_t saved = frame[len];
+        frame[len] = '\0';
+        debug_process_command((const char *)frame);
+        frame[len] = saved;
+        return;
+    }
+
+    /* 默认: 回显接收到的帧，方便调试验证 */
     uart2_send_string("[UART2_RX] ");
     uart2_send_bytes(frame, len);
     uart2_send_string("\r\n");

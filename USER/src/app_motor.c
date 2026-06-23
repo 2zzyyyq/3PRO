@@ -106,6 +106,7 @@ void Cmd_Motor_Stop(void)
 
 void motor_stop(void)
 {
+	DEBUG_TRACE(MOD_MOTOR, "motor_stop() called, pos=%d", Ell_Data.Motor_Current_Position);
 	#ifdef NO_PWM_MOTOR
 	  	MOTOR_DN_IO(1);
 
@@ -117,6 +118,7 @@ void motor_stop(void)
 }
 void motor_up(void)
 {
+	DEBUG_TRACE(MOD_MOTOR, "motor_up() called, pos=%d", Ell_Data.Motor_Current_Position);
 	#ifdef NO_PWM_MOTOR
     MOTOR_DN_IO(1);
 	 	MOTOR_UP_IO(0);
@@ -129,6 +131,7 @@ void motor_up(void)
 
 void motor_down(void)
 {
+	DEBUG_TRACE(MOD_MOTOR, "motor_down() called, pos=%d", Ell_Data.Motor_Current_Position);
 	#ifdef NO_PWM_MOTOR
  	    MOTOR_DN_IO(0);
 	   	MOTOR_UP_IO(1);

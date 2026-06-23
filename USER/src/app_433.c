@@ -364,6 +364,7 @@ uint8_t analysis_capture_command(CAPTURE_COMMAND *Capture_Command,uint8_t power_
 /*遥控器码响应*/
 void capture_433key_judge_answer(button* handle,uint8_t power_on_10stime_flag)
 {	
+		DEBUG_TRACE(MOD_433, "433 remote key event processed");
 	static uint8_t cmd=0;	
 	static uint16_t Capture_433KEY_LONG_TICKS;//对码长按时间
 	if(Capture_Command.Capture_State==CAPTURE_COMMANG_END)//接收到一包遥控器数据

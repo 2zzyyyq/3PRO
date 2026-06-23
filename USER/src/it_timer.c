@@ -1,11 +1,13 @@
 #include "main.h"
 #include "ALL.h"
+#include "app_debug.h"
 
 void HAL_TIM_CNT_IRQHandler_BACK(void);
 void HAL_TIM_CNT_IRQHandler_BACK(void)
 {
  
     /* Start user code. Do not edit comment generated here */
+    g_debug_tick_ms++;  /* 调试时间戳递增 (1ms/tick) */
     Time.time5ms++;
     Time.time10ms++;
     Time.time100ms++;

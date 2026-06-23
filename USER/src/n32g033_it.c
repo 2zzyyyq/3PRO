@@ -32,6 +32,7 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
     /* Go to infinite loop when Hard Fault exception occurs */
+    DEBUG_ERROR(MOD_MAIN, "!!! HARDFAULT !!! system halted");
     while (1)
     {
     }
@@ -270,6 +271,7 @@ void PVD_IRQHandler(void)
  if (EXTI_GetITStatus(EXTI_LINE7) != RESET)
     {
 			EXTI_ClrITPendBit(EXTI_LINE7);
+		    DEBUG_ERROR(MOD_PVD, "Power down detected! Saving data to flash...");
 			MOTOR_DN_IO(0);//停止电机
 			MOTOR_UP_IO(0);
 			B_MOTOR_DN_IO(0);

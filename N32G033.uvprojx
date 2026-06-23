@@ -606,6 +606,11 @@
               <FilePath>.\USER\src\app_buzz.c</FilePath>
             </File>
             <File>
+              <FileName>app_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\src\app_debug.c</FilePath>
+            </File>
+            <File>
               <FileName>app_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\USER\src\app_flash.c</FilePath>

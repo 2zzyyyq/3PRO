@@ -86,6 +86,7 @@ const MiioConst_TypeDef MiioConst = {
 
 void r_uart0_service(void)
 { 
+	DEBUG_TRACE(MOD_WIFI, "WiFi net state change detected");
   if(get_queue_total_data() > 0)
   {
     if(mcu_common_uart_data_unpack(Queue_Read_Byte()))//收到一包数据
@@ -158,6 +159,13 @@ void data_handle(void)
     char *buf = (char *)uart1_rx_buf;
     char  first = buf[0];
     uint8_t step = g_DevStatus.Poweron_Set_Model_step;
+
+    /* ====== Debug command intercept (all phases) ====== */
+    if (first == 'D' && strncmp(buf, "DBG:", 4) == 0)
+    {
+        debug_process_command(buf);
+        goto clear_buf;
+    }
 
     /* ====== Phase 1: PCBA self-test ====== */
     if (Flag.Enter_Pcba_test_flag)
@@ -2509,6 +2517,7 @@ void Judge_Nightlight_Mode(void)
 
 void Model_Net_Change(void)
 {
+	DEBUG_TRACE(MOD_WIFI, "WiFi net state change detected");
 	if (strcmp(MiioConst.WIFIoffline, (char *)uart1_rx_buf) == 0)
 	{
 		if (Net_state != NET_OFFLINE)
