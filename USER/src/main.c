@@ -143,72 +143,9 @@ int main(void)
 //        
         if (Flag.time10ms_flag)
         {
-			 
-						#ifdef  TESTADC			
-						if(Flag.mcu_wifi_mode)
-						{
-							volatile uint16_t u32AdcRestult2;
-							volatile uint16_t u32AdcRestult3;
-							int16_t u32AdcRestult4;
-							unsigned char debug_buf[80];
-							u32AdcRestult2=Motor_Current.ADvalue*1000/4095*3.6/0.1;	
-							snprintf((char*)debug_buf, sizeof(debug_buf), "<any>:%d,%d,%d\r\n",Motor_Current.ADvalue,Ell_Data.Motor_Current_Position,u32AdcRestult2
-                                                            );
-						  r_uart0_send_bytes(debug_buf, strlen( (const char*)debug_buf ));
-						}
-						#else  
-
-						#endif
- 
-          Flag.time10ms_flag = 0;
-					
-          alarm_signal_test_and_beep();    // 报警信号检测
-      
-          CmdBzhx(); // 蜂鸣器动作                  
-
-            /* 周期性系统状态输出 (每10ms), 用于软件可靠性分析 */
-            {
-                static uint8_t cnt_100ms = 0;
-                cnt_100ms++;
-
-                /* 电机状态 (每10ms) */
-                DEBUG_INFO(MOD_MOTOR, "st=%d pos=%d pulse=%d spd=%d run=%d",
-                           Device_State_Data.Motor_State_Byte,
-                           Device_State_Data.Motor_Position,
-                           Motor_Current_Position_pulse,
-                           Device_State_Data.current_speed,
-                           Flag.Motor_run_now);
-                /* 电流与故障 (每10ms) */
-                DEBUG_INFO(MOD_ADC, "adc=%d err=0x%02X(obs=%d ow=%d stall=%d)",
-                           Motor_Current.ADvalue,
-                           Err.data,
-                           Err.err_bit.Encounter_Obstacle,
-                           Err.err_bit.Over_Wight,
-                           Err.err_bit.Motor_Err);
-                /* 电机运行时打印实际电流值 */
-                if (Flag.Motor_run_now)
-                {
-                    uint16_t cur_x100 = (uint32_t)Motor_Current.ADvalue * 3600 / 4095;
-                    DEBUG_INFO(MOD_ADC, "I_motor=%d.%02dA (adc=%d)",
-                               cur_x100 / 100, cur_x100 % 100,
-                               Motor_Current.ADvalue);
-                }
-                /* 限位 (每10ms) */
-                DEBUG_INFO(MOD_LIMIT, "up_lim=%d dn_lim=%d yz=%d",
-                           Flag.Up_limit,
-                           Flag.Down_limit,
-                           Flag.Yz);
-                /* WiFi/网络状态 (每100ms) */
-                if (cnt_100ms >= 10)
-                {
-                    cnt_100ms = 0;
-                    DEBUG_INFO(MOD_WIFI, "net=%d step=%d tick=%lu",
-                               Net_state,
-                               g_DevStatus.Poweron_Set_Model_step,
-                               (unsigned long)g_debug_tick_ms);
-                }
-            }
-
+            Flag.time10ms_flag = 0;
+            alarm_signal_test_and_beep();    // 报警信号检测
+            CmdBzhx(); // 蜂鸣器动作
         }
         if (Flag.time100ms_flag)
         {
@@ -216,6 +153,56 @@ int main(void)
             Flag.time100ms_flag = 0;
  
             PowerOn_ModelSet();
+            /* 周期性系统状态输出 (每500ms), 用于软件可靠性分析 */
+            {
+                static uint8_t cnt_500ms = 0;
+                static uint8_t cnt_1s    = 0;
+                cnt_500ms++;
+                cnt_1s++;
+
+                if (cnt_500ms >= 5)
+                {
+                    cnt_500ms = 0;
+                    /* 电机状态 */
+                    DEBUG_INFO(MOD_MOTOR, "st=%d pos=%d pulse=%d spd=%d run=%d",
+                               Device_State_Data.Motor_State_Byte,
+                               Device_State_Data.Motor_Position,
+                               Motor_Current_Position_pulse,
+                               Device_State_Data.current_speed,
+                               Flag.Motor_run_now);
+                    /* 电流与故障 */
+                    DEBUG_INFO(MOD_ADC, "adc=%d err=0x%02X(obs=%d ow=%d stall=%d)",
+                               Motor_Current.ADvalue,
+                               Err.data,
+                               Err.err_bit.Encounter_Obstacle,
+                               Err.err_bit.Over_Wight,
+                               Err.err_bit.Motor_Err);
+                    /* 电机运行时打印实际电流值 */
+                    if (Flag.Motor_run_now)
+                    {
+                        uint16_t cur_x100 = (uint32_t)Motor_Current.ADvalue * 3600 / 4095;
+                        DEBUG_INFO(MOD_ADC, "I_motor=%d.%02dA (adc=%d)",
+                                   cur_x100 / 100, cur_x100 % 100,
+                                   Motor_Current.ADvalue);
+                    }
+                    /* 限位 */
+                    DEBUG_INFO(MOD_LIMIT, "up_lim=%d dn_lim=%d yz=%d",
+                               Flag.Up_limit,
+                               Flag.Down_limit,
+                               Flag.Yz);
+                }
+
+                if (cnt_1s >= 10)
+                {
+                    cnt_1s = 0;
+                    /* WiFi/网络状态 (每1s) */
+                    DEBUG_INFO(MOD_WIFI, "net=%d step=%d tick=%lu",
+                               Net_state,
+                               g_DevStatus.Poweron_Set_Model_step,
+                               (unsigned long)g_debug_tick_ms);
+                }
+            }
+
         }
         
         /* 每个150ms循环执行 */
