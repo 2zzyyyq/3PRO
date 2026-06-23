@@ -63,11 +63,14 @@ int main(void)
 
 			variable_init();
 			
-	 	  r_uart0_protocol_init();
-    /*UART2初始化*/
+      r_uart0_protocol_init();
+      /*UART2初始化*/
       uart2_init(UART2_BAUDRATE);
-				debug_init();  /* 结构化调试日志初始化 (UART2) */
-				DEBUG_INFO(MOD_MAIN, "System boot complete, entering main loop");
+
+      debug_init();  /* 结构化调试日志初始化 (UART2) */
+
+      DEBUG_INFO(MOD_MAIN, "System boot complete, entering main loop");
+      
       uart2_protocol_init();
 			      /*I/O中断配置*/	
       KeyInputExtiInit(AC_INPUT_PORT, AC_INPUT_PIN);
@@ -194,6 +197,14 @@ int main(void)
                                Err.err_bit.Encounter_Obstacle,
                                Err.err_bit.Over_Wight,
                                Err.err_bit.Motor_Err);
+                    /* 电机运行时打印实际电流值 (单位: 0.01A) */
+                    if (Flag.Motor_run_now)
+                    {
+                        uint16_t cur_x100 = (uint32_t)Motor_Current.ADvalue * 3600 / 4095;
+                        DEBUG_INFO(MOD_ADC, "I_motor=%d.%02dA (adc=%d)",
+                                   cur_x100 / 100, cur_x100 % 100,
+                                   Motor_Current.ADvalue);
+                    }
                     /* 限位 */
                     DEBUG_INFO(MOD_LIMIT, "up_lim=%d dn_lim=%d yz=%d",
                                Flag.Up_limit,
